@@ -16,7 +16,7 @@
 }
 ```
 
-6. npm install to get plugin.
+6. `npm install` to get plugin.
 7. Set S3 bucket name in serverless.yml (create in root of project). It deploys /app folder right now, need to change
 8. Then deploy `sudo serverless deploy --verbose`
 9. Then sync app/ to S3 bucket, `sudo serverless syncToS3`
