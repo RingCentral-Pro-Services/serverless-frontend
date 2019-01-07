@@ -56,7 +56,7 @@ resources:
           Enabled: 'true'
           ## Uncomment the following section in case you are using a custom domain
           # Aliases:
-          # - mysite.example.com
+          # - www.mysite.example.com
           DefaultRootObject: index.html
           ## Since the Single Page App is taking care of the routing we need to make sure ever path is served with index.html
           ## The only exception are files that actually exist e.h. app.js, reset.css
@@ -94,7 +94,7 @@ resources:
           #   Bucket: mylogs.s3.amazonaws.com
           #   Prefix: myprefix
 
-  ## In order to print out the hosted domain via `serverless info` we need to define the DomainName output for CloudFormation
+  ## In order to print out the hosted domain via `serverless domainInfo` we need to define the DomainName output for CloudFormation
   Outputs:
     WebAppCloudFrontDistributionOutput:
       Value:
