@@ -121,6 +121,35 @@ resources:
               DNSName:
                 'Fn::GetAtt': [WebAppCloudFrontDistribution, DomainName]
 
+    # WebACL:
+    #   Type: "AWS::WAF::WebACL"
+    #   Properties:
+    #     DefaultAction:
+    #       Type: BLOCK
+    #     MetricName: "TrustedIPs"
+    #     Name: "TrustedIPs"
+    #     Rules:
+    #       - Action:
+    #           Type: ALLOW
+    #         Priority: 1
+    #         RuleId: {Ref: WAFRule}
+    # WAFRule:
+    #   Type: "AWS::WAF::Rule"
+    #   Properties:
+    #     Name: "MyIPSetRule"
+    #     MetricName: "MyIPSetRule"
+    #     Predicates:
+    #       - DataId: {Ref: WAFIpSet}
+    #         Negated: false
+    #         Type: "IPMatch"
+    # WAFIpSet:
+    #   Type: "AWS::WAF::IPSet"
+    #   Properties:
+    #     IPSetDescriptors:
+    #       - Type: "IPV4"
+    #         Value: "192.168.1.1/32" # Corporate IP whitelist goes here
+    #     Name: IPSet for whitelisted IP adresses
+
 # resources:
 #   Resources:
 #     ## Specifying the S3 Bucket
