@@ -51,6 +51,8 @@ resources:
       Type: AWS::CloudFront::Distribution
       Properties:
         DistributionConfig:
+          #WebACLId: 
+            #Ref: "WebACL"
           Origins:
             - DomainName: ${self:custom.s3Bucket}.s3.amazonaws.com
               ## An identifier for the origin which must be unique within the distribution
