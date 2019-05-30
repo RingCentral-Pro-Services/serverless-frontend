@@ -1,4 +1,4 @@
-# Deploying ReactJS app to S3 and Cloudfront using Serverless
+# Deploying ReactJS app (or any static web app) to S3 and Cloudfront using Serverless
 
 ## Instructions
 1. Install serverless framework `npm install -g serverless`.
@@ -8,6 +8,7 @@
 3. Setup AWS credentials using serverless `serverless config credentials --provider aws --key AKIAIOSFODNN7EXAMPLE --secret wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY`
 
 4. Copy serverless-single-page-app-plugin folder to root of project.
+
 5. Add plugin to package.json devDependencies section:
 
 ```
@@ -16,9 +17,20 @@
 }
 ```
 
-6. `npm install` to get plugin.
-7. Set S3 bucket name in serverless.yml (create in root of project). It deploys /app folder right now, need to change
+6. `npm install` to get the plugin.
+
+7. Set S3 bucket name in serverless.yml (create in root of project). It deploys app/ folder right now, may need to change.
+
 8. Then deploy `sudo serverless deploy --verbose`
+
 9. Then sync app/ to S3 bucket, `sudo serverless syncToS3`
+
 10. Check what domain was generated `sudo serverless domainInfo`
+
 11. Invalidate CloudFront cache after making changes to CloudFront Distribution `sudo serverless invalidateCloudFrontCache`.
+
+## TODOS
+* Box it up as a private NPM package instead of having to manually add the file to package.json.
+* Enhance 'serverless domainInfo" plugin command to return custom domain along with the auto-generated cloudfront domain.
+
+
