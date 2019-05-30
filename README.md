@@ -69,15 +69,19 @@ custom:
 
 6. `npm install` to get the plugin.
 
-7. Set S3 bucket name in serverless.yml (create in root of project). It deploys app/ folder right now, may need to change.
+7. Set the `service:` parameter at the top of the file (either `serverless-for-development.yml` or `serverless-for-production.yml`) to your desired service name. This is what AWS will use to name your CloudFormation stacks. Rename the file to `serverless.yml` (make sure it is in the root of the project).
 
-8. Then deploy `sudo serverless deploy --verbose`
+8. If using the development version, simply set the `s3Bucket` parameter to what you want your bucket named. It deploys app/ folder right now, may need to change that.
 
-9. Then sync app/ to S3 bucket, `sudo serverless syncToS3`
+If using the production version, set the `s3Bucket`, `appDomain`, `appEndpoint` and `acmCertificateArn` parameters to your values. It deploys app/ folder right now, may need to change that.
 
-10. Check what domain was generated `sudo serverless domainInfo`
+9. Then deploy `sudo serverless deploy --verbose`
 
-11. Invalidate CloudFront cache after making changes to CloudFront Distribution `sudo serverless invalidateCloudFrontCache`.
+10. Then sync your app/ folder to the S3 bucket, `sudo serverless syncToS3`
+
+11. Check what domain was generated `sudo serverless domainInfo`
+
+12. Invalidate CloudFront cache after making changes to CloudFront Distribution `sudo serverless invalidateCloudFrontCache`.
 
 ## TODOS
 * Box it up as a private NPM package instead of having to manually add the file to package.json.
