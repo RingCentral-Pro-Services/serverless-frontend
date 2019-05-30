@@ -22,7 +22,7 @@ custom:
 ```
 
 ### CloudFront
-CloudFront is the CDN that serves your content from the S3 bucket. CloudFront caches the content and serves it from the closest S3 edge location to the user. CloudFront is also where the WebACL(s) for the WAF are applied. This plugin grants CloudFront access to the private S3 bucket by means of an OAI (Origin Access Identity) per AWS best practices for accessing restricted buckets.
+CloudFront is the CDN that serves your content from the S3 bucket. CloudFront caches the content and serves it from the closest S3 edge location to the user. CloudFront is also where the WebACL(s) for the WAF are applied. This plugin grants CloudFront access to the private S3 bucket it creates by means of an OAI (Origin Access Identity) per AWS best practices for accessing restricted buckets.
 
 ### Web Application Firewall (WAF)
 The WAF in this plugin is configured to deny access to any subnet that is not an RingCentral corporate subnet. If public access to the front-end of the application is desired, then simply comment out or remove the WebACL, WAFRule and WAFIpSet lines and remove the reference to the WebACLId from the CloudFront distribution section.
@@ -37,7 +37,7 @@ custom:
 ```
 For example, if your appEndpoint is set to `app-xyz` and your appDomain is set to `ringcentralps.com`, then your app will be located at `app-xyz.ringcentralps.com` after deployment (the default CloudFront URL will remain accessible as well).
 
-An ACM certificate matching the value of appDomain is required unless using the default CloudFront certificate (which is good if you are only using the default CloudFront URL and do not need the custom domain functionality). See ACM section below.
+An ACM certificate (SSL/TLS) validated against the domain being used as the value of 'appDomain' is required unless using the default CloudFront certificate. Using the default certificate can be useful, for example, if you only need to use the default CloudFront URL during Dev/QA and do not need the custom domain functionality. See ACM section below.
 
 ### AWS Certificate Manager (ACM)
 working on it...
@@ -45,7 +45,7 @@ working on it...
 
 
 
-instructions for custom domain??
+instructions for custom domain/vars ??
 
 ## Instructions
 1. Install serverless framework `npm install -g serverless`.
