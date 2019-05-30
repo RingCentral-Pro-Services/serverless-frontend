@@ -12,6 +12,8 @@ This plugin uses the following AWS services:
 * Route53 DNS
 * AWS Certificate Manager (ACM)
 
+The serverless code for this plugin comes in two flavors, one intended for use during development and one intended for use in production. The only differences are that the production code uses custom domains and certificates which cost more and are not needed during development (during development it is generally fine to use the default CloudFront URL and certificate). They are otherwise identical.
+
 ### S3
 This plugin deploys the S3 bucket with all public access disabled as per RingCentral corporate security guidelines. The only entities allowed to access the S3 bucket are the CloudFront Origin Access Identity and the bucket owner.
 
@@ -28,7 +30,7 @@ CloudFront is the CDN that serves your content from the S3 bucket. CloudFront ca
 The WAF in this plugin is configured to deny access to any subnet that is not an RingCentral corporate subnet. If public access to the front-end of the application is desired, then simply comment out or remove the WebACL, WAFRule and WAFIpSet lines and remove the reference to the WebACLId from the CloudFront distribution section.
 
 ### Route 53 DNS
-The plugin automatically creates a DNS entry in Route53 for the app in the custom domain specified under the serverless custom variables section:
+If using the production code, the plugin automatically creates a DNS entry in Route53 for the app in the custom domain specified under the serverless custom variables section:
 ```
 custom:
   appDomain: 'ringcentralps.com'
@@ -37,10 +39,12 @@ custom:
 ```
 For example, if your appEndpoint is set to `app-xyz` and your appDomain is set to `ringcentralps.com`, then your app will be located at `app-xyz.ringcentralps.com` after deployment (the default CloudFront URL will remain accessible as well).
 
-An ACM certificate (SSL/TLS) validated against the domain being used as the value of 'appDomain' is required unless using the default CloudFront certificate. Using the default certificate can be useful, for example, if you only need to use the default CloudFront URL during Dev/QA and do not need the custom domain functionality. See ACM section below.
+An existing ACM certificate (SSL/TLS) validated against the domain being used as the value of 'appDomain' is required. See the ACM section below.
+
+If using the development code, the default CloudFront SSL certificate and auto-generated URL will be used. You can retrieve the default CloudFront URL for your app after deployment by running the `sudo serverless domainInfo` command (see the Instructions section below for more information).
 
 ### AWS Certificate Manager (ACM)
-The plugin uses ACM to automatically apply an SSL/TLS certificate to the application. You must specify the ARN of the certificate from ACM in the serverless custom variables section:
+If using the production code, the plugin will use ACM to automatically apply an SSL/TLS certificate to the application. You must specify the ARN of the certificate from ACM in the serverless custom variables section:
 ```
 custom:
   acmCertificateArn: 'arn:aws:acm:us-east-1:179104732438:certificate/f92a9247-ce16-471f-b808-be36a2xxxxxx' # The Amazon Resource Name (ARN) of an AWS Certificate Manager (ACM) certificate.
