@@ -40,12 +40,11 @@ For example, if your appEndpoint is set to `app-xyz` and your appDomain is set t
 An ACM certificate (SSL/TLS) validated against the domain being used as the value of 'appDomain' is required unless using the default CloudFront certificate. Using the default certificate can be useful, for example, if you only need to use the default CloudFront URL during Dev/QA and do not need the custom domain functionality. See ACM section below.
 
 ### AWS Certificate Manager (ACM)
-working on it...
-
-
-
-
-instructions for custom domain/vars ??
+The plugin uses ACM to automatically apply an SSL/TLS certificate to the application. You must specify the ARN of the certificate from ACM in the serverless custom variables section:
+```
+custom:
+  acmCertificateArn: 'arn:aws:acm:us-east-1:179104732438:certificate/f92a9247-ce16-471f-b808-be36a2xxxxxx' # The Amazon Resource Name (ARN) of an AWS Certificate Manager (ACM) certificate.
+```
 
 ## Instructions
 1. Install serverless framework `npm install -g serverless`.
