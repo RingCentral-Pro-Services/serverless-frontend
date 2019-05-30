@@ -71,9 +71,7 @@ custom:
 
 7. Set the `service:` parameter at the top of the file (either `serverless-for-development.yml` or `serverless-for-production.yml`) to your desired service name. This is what AWS will use to name your CloudFormation stacks. Rename the file to `serverless.yml` (make sure it is in the root of the project).
 
-8. If using the development version, simply set the `s3Bucket` parameter to what you want your bucket named. It deploys app/ folder right now, may need to change that.
-
-If using the production version, set the `s3Bucket`, `appDomain`, `appEndpoint` and `acmCertificateArn` parameters to your values. It deploys app/ folder right now, may need to change that.
+8. If using the development version, simply set the `s3Bucket` parameter to what you want your bucket named. It deploys app/ folder right now, may need to change that. If using the production version, set the `s3Bucket`, `appDomain`, `appEndpoint` and `acmCertificateArn` parameters to your values. It also deploys app/ folder as of now.
 
 9. Then deploy `sudo serverless deploy --verbose`
 
