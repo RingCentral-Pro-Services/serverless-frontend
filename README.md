@@ -83,7 +83,7 @@ custom:
 
 ## TODOS
 * Box it up as a private NPM package instead of having to manually add the file to package.json.
-* Enhance 'serverless domainInfo" plugin command to return custom domain along with the auto-generated cloudfront domain.
+* Enhance `serverless domainInfo` plugin command to return custom domain along with the auto-generated cloudfront domain.
 * SSM for encrypting environmental variables.
 
 
