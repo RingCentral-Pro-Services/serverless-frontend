@@ -23,7 +23,11 @@ resources:
       Type: AWS::S3::Bucket
       Properties:
         BucketName: ${self:custom.s3Bucket}
-        AccessControl: PublicRead
+        PublicAccessBlockConfiguration:
+          BlockPublicAcls: 'true'
+          IgnorePublicAcls: 'true'
+          BlockPublicPolicy: 'true'
+          RestrictPublicBuckets: 'true'
         WebsiteConfiguration:
           IndexDocument: index.html
           ErrorDocument: index.html
