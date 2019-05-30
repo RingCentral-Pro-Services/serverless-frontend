@@ -30,7 +30,7 @@ CloudFront is the CDN that serves your content from the S3 bucket. CloudFront ca
 The WAF in this plugin is configured to deny access to any subnet that is not an RingCentral corporate subnet. If public access to the front-end of the application is desired, then simply comment out or remove the WebACL, WAFRule and WAFIpSet lines and remove the reference to the WebACLId from the CloudFront distribution section.
 
 ### Route 53 DNS
-If using the production code, the plugin automatically creates a DNS entry in Route53 for the app in the custom domain specified under the serverless custom variables section:
+If using the production code, the plugin automatically creates a DNS entry in Route53 for the app inside the custom domain specified under the serverless custom variables section:
 ```
 custom:
   appDomain: 'ringcentralps.com'
