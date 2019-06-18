@@ -7,14 +7,14 @@ plugins:
 
 custom:
   s3Bucket: 'kyle-testing-oai'
-  appDomain: 'ringcentralps.com'
+  appDomain: 'ps.ringcentral.com'
   appEndpoint: 'kyle-testing-oai'
-  acmCertificateArn: 'arn:aws:acm:us-east-1:179104732438:certificate/f92a9247-ce16-471f-b808-be36a28b5125' # The Amazon Resource Name (ARN) of an AWS Certificate Manager (ACM) certificate.
+  acmCertificateArn: 'arn:aws:acm:us-east-2:256329341370:certificate/d16c5bcf-e259-48a7-b3ea-b3c2e0cb8155' # The Amazon Resource Name (ARN) of an AWS Certificate Manager (ACM) certificate.
 
 provider:
   name: aws
   runtime: nodejs8.10
-  region: us-east-1
+  region: us-east-2
 
 resources:
   Resources:
