@@ -9,7 +9,7 @@ custom:
   s3Bucket: 'kyle-testing-oai'
   appDomain: 'ps.ringcentral.com'
   appEndpoint: 'kyle-testing-oai'
-  acmCertificateArn: 'arn:aws:acm:us-east-2:256329341370:certificate/d16c5bcf-e259-48a7-b3ea-b3c2e0cb8155' # The Amazon Resource Name (ARN) of an AWS Certificate Manager (ACM) certificate.
+  acmCertificateArn: 'arn:aws:acm:us-east-1:256329341370:certificate/f3b6c430-07e3-4510-a563-d13fa49ef4ba' # The Amazon Resource Name (ARN) of an AWS Certificate Manager (ACM) certificate. Cert must be issued/located in region us-east-1 in order for CloudFront to find it, regardless of which region the stack is being launched in (CloudFront has no regions).
 
 provider:
   name: aws
