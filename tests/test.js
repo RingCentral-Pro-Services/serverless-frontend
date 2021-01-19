@@ -1,4 +1,4 @@
-const ServerlessPlugin = require('../index');
+const ServerlessPlugin = require('../src/index');
 const serverless = require('serverless');
 
 test('Working Constructor', () => {
