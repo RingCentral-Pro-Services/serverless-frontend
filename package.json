@@ -1,14 +1,22 @@
 {
     "name": "serverless-single-page-app-plugin",
     "version": "1.0.0",
+    "main": "index.js",
     "description": "A serverless plugin to simplify deploying ReactJS Application using S3 and CloudFront",
-    "author": "",
+    "author": "Kyle Cleveland <kyle.cleveland@ringcentral.com",
     "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/RingCentral-Pro-Services/serverless-frontend.git"
+    },
     "scripts": {
         "test": "jest"
     },
-    "dependencies": {},
+    "dependencies": {
+        "serverless": "^2.19.0"
+    },
     "devDependencies": {
+        "@types/jest": "^26.0.20",
         "jest": "^26.6.3"
     }
 }

@@ -1,25 +1,26 @@
 const ServerlessPlugin = require('../index');
+const serverless = require('serverless');
 
 test('Working Constructor', () => {
-    let serverless = new ServerlessPlugin()
+    let serverlessInstance = new ServerlessPlugin(serverless, {})
 
-    expect(serverless).toBeDefined();
+    expect(serverlessInstance).toBeDefined();
 });
 
 test('Run AWS Commands', () => {
-    let serverless = new ServerlessPlugin()
+    let serverlessInstance = new ServerlessPlugin(serverless, {})
 
-    expect(serverless.runAwsCommand()).toBeDefined();
+    expect(serverlessInstance.runAwsCommand()).toBeDefined();
 });
 
 test('Run Sync Directory', () => {
-    let serverless = new ServerlessPlugin()
+    let serverlessInstance = new ServerlessPlugin(serverless, {})
 
-    expect(serverless.syncDirectory()).toBeDefined();
+    expect(serverlessInstance.syncDirectory()).toBeDefined();
 });
 
 test('Show Domain Info', () => {
-    let serverless = new ServerlessPlugin()
+    let serverlessInstance = new ServerlessPlugin(serverless, {})
 
-    expect(serverless.domainInfo()).toBeDefined();
+    expect(serverlessInstance.domainInfo()).toBeDefined();
 });
