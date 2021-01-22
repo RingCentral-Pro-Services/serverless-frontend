@@ -1,5 +1,5 @@
 {
-    "name": "@RingCentral-Pro-Services/serverless-frontend",
+    "name": "@ringcentral-pro-services/serverless-frontend",
     "version": "1.0.0",
     "main": "src/index.js",
     "description": "A serverless plugin to simplify deploying ReactJS Application using S3 and CloudFront",
