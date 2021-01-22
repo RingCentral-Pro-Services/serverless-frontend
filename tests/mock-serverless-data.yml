@@ -1,7 +1,5 @@
 service: your-service-name
 
-frameworkVersion: ">=1.2.0 <2.0.0"
-
 plugins:
   - serverless-single-page-app-plugin
 
@@ -10,7 +8,7 @@ custom:
 
 provider:
   name: aws
-  runtime: nodejs8.10
+  runtime: nodejs12
 
 resources:
   Resources:
@@ -127,41 +125,7 @@ resources:
       Properties:
         IPSetDescriptors: # Corporate IP whitelist goes here
           - Type: "IPV4"
-            Value: "81.145.215.144/29" # UK
-          - Type: "IPV4"
-            Value: "95.129.65.200/29" # UK 2
-          - Type: "IPV4"
-            Value: "12.172.84.80/28" # Belmont
-          - Type: "IPV4"
-            Value: "50.207.16.16/28" # Belmont 2
-          - Type: "IPV4"
-            Value: "121.127.6.152/29" # Manila
-          - Type: "IPV4"
-            Value: "122.3.254.120/29" # Manila 2
-          - Type: "IPV4"
-            Value: "50.205.64.144/28" # Denver
-          - Type: "IPV4"
-            Value: "65.114.194.16/28" # Denver 2
-          - Type: "IPV4"
-            Value: "65.114.208.208/28" # Denver 3
-          - Type: "IPV4"
-            Value: "96.93.215.0/30" # Denver 4
-          - Type: "IPV4"
-            Value: "205.169.108.144/29" # Denver 5
-          - Type: "IPV4"
-            Value: "12.31.117.248/29" # Charlotte
-          - Type: "IPV4"
-            Value: "65.114.29.168/29" # Charlotte 2
-          - Type: "IPV4"
-            Value: "12.26.51.128/27" # Boca Raton
-          - Type: "IPV4"
-            Value: "110.87.98.80/28" # Xiamen
-          - Type: "IPV4"
-            Value: "122.112.115.0/24" # Xiamen 2
-          - Type: "IPV4"
-            Value: "210.13.208.144/28" # Xiamen 3
-          - Type: "IPV4"
-            Value: "50.237.72.0/24" # VPN
+            Value: "8.8.8.8/29" # Google
         Name: IPSet for whitelisted IP adresses
 
   ## In order to print out the hosted domain via `serverless domainInfo` we need to define the DomainName output for CloudFormation

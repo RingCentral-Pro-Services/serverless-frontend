@@ -1,0 +1,169 @@
+service: your-service-name
+
+plugins:
+  - serverless-single-page-app-plugin
+
+custom:
+  s3Bucket: your-desired-s3-bucket-name
+
+provider:
+  name: aws
+  runtime: nodejs12
+
+resources:
+  Resources:
+    ## Specifying the S3 Bucket
+    WebAppS3Bucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: ${self:custom.s3Bucket}
+        PublicAccessBlockConfiguration: ## https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-s3-bucket-publicaccessblockconfiguration.html
+          BlockPublicAcls: 'true'
+          IgnorePublicAcls: 'true'
+          BlockPublicPolicy: 'true'
+          RestrictPublicBuckets: 'true'
+        WebsiteConfiguration:
+          IndexDocument: index.html
+          ErrorDocument: index.html
+    ## Specifying the policies to make sure all files inside the Bucket are avaialble to CloudFront
+    WebAppS3BucketPolicy:
+      Type: AWS::S3::BucketPolicy
+      Properties:
+        Bucket:
+          Ref: WebAppS3Bucket
+        PolicyDocument:
+          Statement:
+            - Sid: "Grant a CloudFront Origin Identity access to private s3 bucket content"
+              Effect: Allow
+              Principal: 
+                CanonicalUser:
+                  'Fn::GetAtt': [CloudFrontOriginAccessIdentity , S3CanonicalUserId] #{"CanonicalUser":"CloudFront Origin Identity Canonical User ID"}
+              Action:
+              - s3:GetObject
+              Resource: arn:aws:s3:::${self:custom.s3Bucket}/*
+    ## Specifying the CloudFront Distribution to server your Web Application
+    WebAppCloudFrontDistribution:
+      Type: AWS::CloudFront::Distribution
+      Properties:
+        DistributionConfig:
+          WebACLId: 
+            Ref: "WebACL"
+          Origins:
+            - DomainName: ${self:custom.s3Bucket}.s3.amazonaws.com
+              ## An identifier for the origin which must be unique within the distribution
+              Id: WebApp
+              S3OriginConfig:
+                OriginAccessIdentity: # origin-access-identity/cloudfront/{Ref: CloudFrontOriginAccessIdentity}
+                  Fn::Join:
+                  - ""
+                  - - "origin-access-identity/cloudfront/"
+                    - Ref: "CloudFrontOriginAccessIdentity"
+          Enabled: 'true'
+          DefaultRootObject: index.html
+          ## Since the Single Page App is taking care of the routing we need to make sure ever path is served with index.html
+          ## The only exception are files that actually exist e.h. app.js, reset.css
+          CustomErrorResponses:
+            - ErrorCode: 404
+              ResponseCode: 200
+              ResponsePagePath: /index.html
+          DefaultCacheBehavior:
+            AllowedMethods:
+              - DELETE
+              - GET
+              - HEAD
+              - OPTIONS
+              - PATCH
+              - POST
+              - PUT
+            ## The origin id defined above
+            TargetOriginId: WebApp
+            ## Defining if and how the QueryString and Cookies are forwarded to the origin which in this case is S3
+            ForwardedValues:
+              QueryString: 'false'
+              Cookies:
+                Forward: none
+            ## The protocol that users can use to access the files in the origin. To allow HTTP use `allow-all`
+            ViewerProtocolPolicy: redirect-to-https
+          ## The certificate to use when viewers use HTTPS to request objects.
+          ViewerCertificate:
+            CloudFrontDefaultCertificate: 'true'
+          ## Uncomment the following section in case you want to enable logging for CloudFront requests
+          # Logging:
+          #   IncludeCookies: 'false'
+          #   Bucket: mylogs.s3.amazonaws.com
+          #   Prefix: myprefix
+    
+    CloudFrontOriginAccessIdentity:
+      Type: AWS::CloudFront::CloudFrontOriginAccessIdentity
+      Properties:
+        CloudFrontOriginAccessIdentityConfig:
+          Comment: CloudFront OAI for app in development '${self:custom.s3Bucket}'
+
+    WebACL:
+      Type: "AWS::WAF::WebACL"
+      Properties:
+        DefaultAction:
+          Type: BLOCK
+        MetricName: "TrustedIPs"
+        Name: "TrustedIPs"
+        Rules:
+          - Action:
+              Type: ALLOW
+            Priority: 1
+            RuleId: {Ref: WAFRule}
+    WAFRule:
+      Type: "AWS::WAF::Rule"
+      Properties:
+        Name: "MyIPSetRule"
+        MetricName: "MyIPSetRule"
+        Predicates:
+          - DataId: {Ref: WAFIpSet}
+            Negated: false
+            Type: "IPMatch"
+    WAFIpSet:
+      Type: "AWS::WAF::IPSet"
+      Properties:
+        IPSetDescriptors: # Corporate IP whitelist goes here
+          - Type: "IPV4"
+            Value: "81.145.215.144/29" # UK
+          - Type: "IPV4"
+            Value: "95.129.65.200/29" # UK 2
+          - Type: "IPV4"
+            Value: "12.172.84.80/28" # Belmont
+          - Type: "IPV4"
+            Value: "50.207.16.16/28" # Belmont 2
+          - Type: "IPV4"
+            Value: "121.127.6.152/29" # Manila
+          - Type: "IPV4"
+            Value: "122.3.254.120/29" # Manila 2
+          - Type: "IPV4"
+            Value: "50.205.64.144/28" # Denver
+          - Type: "IPV4"
+            Value: "65.114.194.16/28" # Denver 2
+          - Type: "IPV4"
+            Value: "65.114.208.208/28" # Denver 3
+          - Type: "IPV4"
+            Value: "96.93.215.0/30" # Denver 4
+          - Type: "IPV4"
+            Value: "205.169.108.144/29" # Denver 5
+          - Type: "IPV4"
+            Value: "12.31.117.248/29" # Charlotte
+          - Type: "IPV4"
+            Value: "65.114.29.168/29" # Charlotte 2
+          - Type: "IPV4"
+            Value: "12.26.51.128/27" # Boca Raton
+          - Type: "IPV4"
+            Value: "110.87.98.80/28" # Xiamen
+          - Type: "IPV4"
+            Value: "122.112.115.0/24" # Xiamen 2
+          - Type: "IPV4"
+            Value: "210.13.208.144/28" # Xiamen 3
+          - Type: "IPV4"
+            Value: "50.237.72.0/24" # VPN
+        Name: IPSet for whitelisted IP adresses
+
+  ## In order to print out the hosted domain via `serverless domainInfo` we need to define the DomainName output for CloudFormation
+  Outputs:
+    WebAppCloudFrontDistributionOutput:
+      Value:
+        'Fn::GetAtt': [ WebAppCloudFrontDistribution, DomainName ]

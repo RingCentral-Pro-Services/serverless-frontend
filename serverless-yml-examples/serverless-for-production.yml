@@ -1,7 +1,5 @@
 service: kyle-testing-oai
 
-frameworkVersion: ">=1.2.0"
-
 plugins:
   - serverless-single-page-app-plugin
 
